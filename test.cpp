@@ -1,27 +1,31 @@
 #include <iostream>
-#include<algorithm>
+#include <algorithm>
+#define int long long 
 using namespace std;
-int a[10][10];
-int main()
+int n, q;
+const int N = 2e5 + 5;
+int a[N], pre[N];//开个前缀数组
+signed main()
 {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    cin >> n >> q;
+    for(int i=1;i<=n;i++)
+    cin>>a[i];
+    sort(a+1,a+1+n);
+    for(int i=1;i<=n;i++)
+    pre[i]=pre[i-1]+a[i];
+    a[n+1]=0x3f3f3f3f3f;
+    while(q--)
+    {
+        int x;cin>>x;
+        int sum=0;
+        int k=upper_bound(a+1,a+n+2,x)-a;//一个比较好用的二分函数，大家可以学习一下
+        sum+=(x*(k-1))-pre[k-1];
+        sum+=pre[n]-pre[k-1]-x*(n-k+1);
+        cout<<sum<<"\n";
+    }
 
-	int n;
-	cin>>n;
-	int k=1;
-	int x=1,y=0;
-	while(k<=n*n)//循环进行整个数组的模拟
-	{
-		while(y<n&&!a[x][y+1]){ a[x][++y]=k++;}
-		while(x<n&&!a[x+1][y]){ a[++x][y]=k++;}
-		while(y>1&&!a[x][y-1]){ a[x][--y]=k++;}
-		while(x>1&&!a[x-1][y]){ a[--x][y]=k++;}
-	}
-	for(int i=1;i<=n;i++)
-	{
-		for(int j=1;j<=n;j++)
-		printf("%3d",a[i][j]);
-		printf("\n");
-	}
-
-	return 0;
- } 
+    return 0;
+}
